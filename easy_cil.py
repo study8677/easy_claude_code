@@ -4,7 +4,7 @@ from openai import OpenAI
 
 # 1. 初始化客户端
 client = OpenAI(
-    api_key='sk-e12130385ecf4f8e8356f100dfe5',
+    api_key='',
     base_url="https://api.deepseek.com"
 )
 
