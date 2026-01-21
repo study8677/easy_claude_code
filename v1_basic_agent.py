@@ -44,7 +44,7 @@ from openai import OpenAI
 WORKDIR = Path.cwd()
 # 创建客户端（OpenAI 兼容接口指向 DeepSeek）
 client = OpenAI(
-    api_key='sk-09b279eaac60459c96bd01226bb7a2ca',
+    api_key='',
     base_url="https://api.deepseek.com/v1"
 )
 # -----------------------------------------------------------------------------

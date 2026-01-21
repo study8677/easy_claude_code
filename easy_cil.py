@@ -4,7 +4,7 @@ from openai import OpenAI
 
 # 1. 初始化客户端
 client = OpenAI(
-    api_key='sk-09b279eaac60459c96bd01226bb7a2ca',
+    api_key='',
     base_url="https://api.deepseek.com"
 )
 CMD_TIMEOUT = 300          # 秒，防止卡死
