@@ -8,15 +8,33 @@ English Version | [中文版](./README.MD)
 ---
 
 ### Project Philosophy
-Several excellent projects, such as `nanocode` and `learn-claude-code`, have demonstrated the principles of Claude Code in a minimalist manner. These projects are invaluable for lowering the barrier to entry and showcasing core workflows.
+Great minimal demos already exist (`nanocode`, `learn-claude-code`), but comprehension ≠ intuition. This repo is for **building the full loop yourself**—Model thinks → calls tools → observes → decides again. We strip everything to the bone so you see clearly: *the model is the decision-maker; your code just supplies tools and a loop.*
 
-However, in the era of AI, true understanding goes beyond "reading and understanding"—it lies in "hands-on implementation." Only after building the key mechanisms yourself will the concepts of model invocation, context organization, and tool orchestration transform from abstract ideas into intuition.
+### Current state (kept in sync with code)
+- `easy_cil.py`: command-running agent with safety blacklist, exit-code return, output truncation, and blocks for interactive TUIs (vim/top/less) plus rm/sudo style danger.
+|- `v1_basic_agent.py`: ~200-line teaching agent exposing 4 function tools (bash/read_file/write_file/edit_file), defaults to DeepSeek `deepseek-chat`.
+- Env config: `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL`; missing keys are detected and warned.
 
-This project is born from this perspective:  
-Building upon previous minimalist implementations, it further strips away unnecessary concepts and engineering noise. With fewer layers of abstraction, it empowers readers to truly grasp how Claude Code works by "building it once."
+### Quick start
+```bash
+pip install openai python-dotenv
+export DEEPSEEK_API_KEY=your_key   # or put in .env
+python v1_basic_agent.py
+```
+Try prompts:
+```
+You: list current directory
+You: read README_EN.MD first 40 lines
+You: create demo.txt with hello world
+```
 
 ### Features
-- **Core Agent Loop**: Implementation of the "think-act-observe" loop.
-- **Local Tool Access**: Ability to run shell commands and manage files.
-- **Safety Guardrails**: Interceptive logic for high-risk commands.
-- **Multimodal Interactions**: Support for multi-turn conversations with history context.
+- **Core agent loop**: model autonomously chains tool calls until done.
+- **Local tool access**: run shell, read/write files, surgical edits.
+- **Safety guardrails**: dangerous-command confirmation, output truncation, timeouts.
+- **Multi-turn memory**: tool results are fed back so the model can iterate.
+
+### Who is it for?
+- Newcomers who want to grok Claude Code / Cursor Agent flow quickly.
+- Engineers needing a “runnable, hackable, readable” minimal agent baseline.
+- Students/hackers experimenting with local tool-use loops on their own box.
