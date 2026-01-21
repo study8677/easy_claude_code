@@ -4,35 +4,58 @@ from openai import OpenAI
 
 # 1. 初始化客户端
 client = OpenAI(
-    api_key='',
+    api_key='sk-09b279eaac60459c96bd01226bb7a2ca',
     base_url="https://api.deepseek.com"
 )
+CMD_TIMEOUT = 300          # 秒，防止卡死
+MAX_OUTPUT_CHARS = 500  # 防止刷屏/占满上下文
+WORKDIR = os.getcwd()      # 固定执行目录，避免跑到奇怪位置
 
 # 2. 定义安全护栏：危险关键词黑名单
 DANGER_ZONE = [
     "rm ", "del ", "rd ", "format", "mkfs", "shred", 
     "chmod 777", "chown", "> /dev/", "powershell.exe", 
-    "reg delete", "taskkill", "shutdown"
+    "reg delete", "taskkill", "shutdown",
+    # 交互型/TUI 程序：会占用终端或挂起 Agent 循环
+    " vim", "nano", "top", "htop", " less", " more"
 ]
 
-def run_command(cmd):
+def run_command(cmd: str):
     # 安全检查逻辑
     is_dangerous = any(danger in cmd.lower() for danger in DANGER_ZONE)
-    
     if is_dangerous:
-        print(f"\n⚠️  [安全警告]: AI 试图执行高危命令: {cmd}")
+        print(f"\n  [安全警告]: AI 试图执行高危命令: {cmd}")
         confirm = input("确认执行吗？ (y/n): ").strip().lower()
         if confirm != 'y':
-            return "执行已被用户拦截：处于安全理由，用户拒绝了该命令的执行。"
-
+            return "执行已被用户拦截：出于安全理由，用户拒绝了该命令的执行。"
     print(f"  [系统执行]: {cmd}")
     try:
-        # 运行命令并获取输出
-        result = subprocess.check_output(cmd, shell=True, stderr=subprocess.STDOUT, text=True, encoding='utf-8', errors='replace')
-        return result or "成功执行（无输出）"
-    except subprocess.CalledProcessError as e:
-        return f"执行出错: {e.output}"
+        p = subprocess.run(
+            cmd,
+            shell=True,
+            capture_output=True,
+            text=True,
+            timeout=CMD_TIMEOUT,
+            cwd=WORKDIR,
+            encoding='utf-8',
+            errors='replace'
+        )
+        rc = p.returncode
+        output = (p.stdout or "") + (p.stderr or "")
+        if not output:
+            output = "成功执行（无输出）"
 
+        # 输出截断（核心工程约束）
+        if len(output) > MAX_OUTPUT_CHARS:
+            output = output[:MAX_OUTPUT_CHARS] + "\n...(输出过长已截断)"
+
+        # 把退出码一并返回，便于模型判断成功/失败
+        return f"[exit {rc}]\\n{output}"
+
+    except subprocess.TimeoutExpired:
+        return f"(timeout after {CMD_TIMEOUT}s)"
+    except Exception as e:
+        return f"执行出错: {repr(e)}"
 # 3. 配置工具说明书
 tools = [
     {
