@@ -12,7 +12,8 @@ Great minimal demos already exist (`nanocode`, `learn-claude-code`), but compreh
 
 ### Current state (kept in sync with code)
 - `easy_cil.py`: command-running agent with safety blacklist, exit-code return, output truncation, and blocks for interactive TUIs (vim/top/less) plus rm/sudo style danger.
-|- `v1_basic_agent.py`: ~200-line teaching agent exposing 4 function tools (bash/read_file/write_file/edit_file), defaults to DeepSeek `deepseek-chat`.
+- `v1_basic_agent.py`: ~200-line teaching agent exposing 4 function tools (bash/read_file/write_file/edit_file), defaults to DeepSeek `deepseek-chat`.
+- `v2_async_agent.py`: async agent (task decoupling + step state machine); submit returns task_id, poll status anytime.
 - Env config: `DEEPSEEK_API_KEY` / `DEEPSEEK_MODEL`; missing keys are detected and warned.
 
 ### Quick start
@@ -20,6 +21,12 @@ Great minimal demos already exist (`nanocode`, `learn-claude-code`), but compreh
 pip install openai python-dotenv
 export DEEPSEEK_API_KEY=your_key   # or put in .env
 python v1_basic_agent.py
+```
+Async version (task decoupling + status polling):
+```bash
+python v2_async_agent.py
+# run <prompt>
+# status <task_id>
 ```
 Try prompts:
 ```

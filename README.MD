@@ -13,6 +13,7 @@
 ### 现在的进度（随代码实测更新）
 - `easy_cil.py`：带安全黑名单、退出码回传、输出截断的命令执行 Agent，黑名单覆盖 rm/sudo 以及 vim/top/less 等会挂起交互的指令。
 - `v1_basic_agent.py`：约 200 行的教学版循环，4 个函数工具（bash/read_file/write_file/edit_file），默认直连 DeepSeek `deepseek-chat`。
+- `v2_async_agent.py`：异步版 Agent（任务解耦 + step 状态机），提交任务返回 task_id，可通过 status 查询进度。
 - `.env`/环境变量：支持通过 `DEEPSEEK_API_KEY`、`DEEPSEEK_MODEL` 配置；未设定时会提示缺失。
 
 ### 快速上手
@@ -20,6 +21,12 @@
 pip install openai python-dotenv
 export DEEPSEEK_API_KEY=你的key   # 或写入 .env
 python v1_basic_agent.py
+```
+异步版（任务解耦 + 状态查询）：
+```bash
+python v2_async_agent.py
+# run <prompt>
+# status <task_id>
 ```
 对话示例：
 ```
