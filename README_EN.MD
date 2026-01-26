@@ -28,11 +28,11 @@ English Version | [中文版](./README.MD)
 ## Architecture (one glance)
 ```mermaid
 flowchart LR
-  A[Request /run] -->|return task_id| B[Task Queue]
-  B --> C[Async Agent Step]
-  C --> D[Tool Call / IO]
-  C --> E[State Store]
-  E --> F[Status /status/{id}]
+  A["Request /run"] -->|return task_id| B["Task Queue"]
+  B --> C["Async Agent Step"]
+  C --> D["Tool Call / IO"]
+  C --> E["State Store"]
+  E --> F["Status /status/:id"]
 ```
 
 ## v1 vs v2
