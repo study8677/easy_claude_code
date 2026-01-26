@@ -2,7 +2,7 @@
 
 English Version | [中文版](./README.MD)
 
-![easy_claude_code overview](https://raw.githubusercontent.com/study8677/easy_claude_code/main/assets/agent-flow.svg)
+![easy_claude_code overview](https://raw.githubusercontent.com/study8677/easy_claude_code/main/assets/agent-flow.png)
 
 ## Project Description
 `easy_claude_code` is a minimalist educational project designed to implement the core logic of an AI Agent with the simplest possible code. It mimics the fundamental working principles of Claude Code: **Model Thinking → Tool Calling → Automated Iterative Loop**. Through this project, you can build your own AI assistant capable of manipulating local files, executing system commands, and implementing safety guardrails, thereby transforming "Agent concepts" into "engineering intuition."
