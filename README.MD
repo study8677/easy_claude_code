@@ -2,7 +2,7 @@
 
 [English Version](./README_EN.MD) | 中文版
 
-![easy_claude_code overview](./assets/agent-flow.svg)
+![easy_claude_code overview](https://raw.githubusercontent.com/study8677/easy_claude_code/main/assets/agent-flow.svg)
 
 ## 项目描述
 本项目（easy_claude_code）是一个旨在通过最精简的代码实现 AI Agent（智能体）核心逻辑的教学项目。它模仿了 Claude Code 的基本工作原理：**模型思考 → 工具调用 → 自动迭代循环**。通过本项目，你可以亲手构建一个能操作本地文件、执行系统命令并带有安全护栏的 AI 助手，从而真正将“Agent 概念”转化为“工程直觉”。
